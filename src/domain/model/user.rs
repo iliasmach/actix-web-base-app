@@ -1,4 +1,6 @@
 use web_app_skeleton::base::entity::BaseEntity;
+use std::any::Any;
+use std::ops::Deref;
 
 #[derive(Debug)]
 pub struct User {
@@ -6,13 +8,13 @@ pub struct User {
 }
 
 impl BaseEntity<i64> for User {
-    fn new() -> Self {
-        User {
-            id: 0
-        }
+    fn new() -> Self where Self: Sized {
+        User { id: 0 }
     }
+
 
     fn id(&self) -> i64 {
         self.id
     }
 }
+

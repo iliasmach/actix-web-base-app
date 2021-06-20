@@ -5,8 +5,8 @@ pub enum EntityError {
 
 pub trait BaseEntity<ID>
     where
-        ID: PartialEq {
-    fn new() -> Self;
+        ID: PartialEq, Self: Send{
+    fn new() -> Self where Self : Sized;
     fn id(&self) -> ID;
 
 }

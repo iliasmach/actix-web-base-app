@@ -4,3 +4,4 @@ pub mod service;
 pub mod controller;
 pub mod cache;
 pub mod error;
+pub mod messages;

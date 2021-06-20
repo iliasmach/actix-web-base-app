@@ -1,30 +1,27 @@
-use crate::domain::repository::user_repository::UserRepository;
-use crate::base::service::BaseService;
+
+use actix::{Actor, Handler, ResponseFuture, Context};
+use crate::domain::service::user_service::UserServiceImpl;
+use crate::infra::repository::UserRepositoryDB;
+use crate::application::messages::user::UserExist;
+
+use web_app_skeleton::base::messages::Find;
+use std::time::Duration;
+use crate::domain::model::user::User;
 
 
-pub trait UserServiceApp<T: UserRepository> {
-    fn user_service(&mut self, service: UserServiceImpl<T>);
-    fn get_user_service(&self) -> &UserServiceImpl<T>;
+impl Actor for UserServiceImpl<UserRepositoryDB> {
+    type Context = Context<UserServiceImpl<UserRepositoryDB>>;
 }
 
+impl Handler<UserExist> for UserServiceImpl<UserRepositoryDB> {
+    type Result = ResponseFuture<Result<User, ()>>;
 
-pub struct UserServiceImpl<T: UserRepository>
-{
-    repo: T,
-}
-
-impl<T: UserRepository> UserServiceImpl<T>
-{
-    pub fn new(repo: T) -> Self {
-        Self { repo }
+    fn handle(&mut self, msg: UserExist, _ctx: & mut Context<Self>) -> Self::Result {
+let repo = self.repo.clone();
+        Box::pin(async move{
+            Ok(repo.send(Find::new(msg.id)).timeout(
+                Duration::from_secs(2)
+            ).await.unwrap().unwrap())
+        })
     }
-
-    pub fn has_user(&self, id: i64) -> bool {
-        match self.repo.find(id) {
-            Ok(_) => true,
-            Err(_e) => false
-        }
-    }
 }
-
-impl<T: UserRepository> BaseService for UserServiceImpl<T> {}
