@@ -18,7 +18,7 @@ impl UserRepositoryDB {
 
 impl UserRepository for UserRepositoryDB
 {
-    fn find(&self, id: i64) -> Result<User, EntityError> {
+    fn find(&self, _id: i64) -> Result<User, EntityError> {
         Ok(User::new())
     }
 }

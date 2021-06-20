@@ -1,8 +1,6 @@
 use crate::domain::repository::user_repository::UserRepository;
 use crate::base::service::BaseService;
 
-use std::ops::Deref;
-use std::any::Any;
 
 pub trait UserServiceApp<T: UserRepository> {
     fn user_service(&mut self, service: UserServiceImpl<T>);
@@ -13,12 +11,6 @@ pub trait UserServiceApp<T: UserRepository> {
 pub struct UserServiceImpl<T: UserRepository>
 {
     repo: T,
-}
-
-impl<T:UserRepository> Clone for UserServiceImpl<T> {
-    fn clone(&self) -> Self {
-        todo!()
-    }
 }
 
 impl<T: UserRepository> UserServiceImpl<T>

@@ -20,8 +20,6 @@ lazy_static! {
 
 pub fn init() {
     lazy_static::initialize(&POOL);
-    let conn = connection().expect("Failed to get db connection");
-    // embedded_migrations::run(&conn).unwrap();
 }
 
 pub fn connection() -> Result<DbConnection, CustomError> {
