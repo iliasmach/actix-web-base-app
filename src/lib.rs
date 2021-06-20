@@ -1,4 +1,4 @@
-pub mod entity;
+pub mod base;
 
 #[cfg(test)]
 mod tests {
